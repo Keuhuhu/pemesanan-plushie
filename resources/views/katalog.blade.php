@@ -52,7 +52,7 @@
         .product-card:hover { transform: translateY(-10px); box-shadow: 0 12px 24px rgba(0, 0, 0, 0.1); }
         
         .product-image {
-            width: 100%; height: 280px; background: #f8f9fa; overflow: hidden; position: relative;
+            width: 100%; height: 250px; background: #f8f9fa; overflow: hidden; position: relative;
         }
         .product-image img {
             width: 100%; 
