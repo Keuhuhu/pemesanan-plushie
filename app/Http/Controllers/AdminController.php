@@ -293,7 +293,7 @@ public function exportPdf(Request $request)
             'kategori' => 'required|string',
             'harga' => 'required|numeric|min:0',
             'stock' => 'required|integer|min:0',
-            'gambar' => 'required|image|mimes:jpeg,png,jpg,webp|max:2048', // Maksimal 2MB
+            'gambar' => 'required|image|mimes:jpeg,png,jpg,webp|max:4096', // Maksimal 2MB
         ]);
 
         // Upload ke Cloudinary
