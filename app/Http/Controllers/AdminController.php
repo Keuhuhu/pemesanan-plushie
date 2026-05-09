@@ -9,6 +9,7 @@ use Illuminate\Support\Facades\Hash;
 use Barryvdh\DomPDF\Facade\Pdf;
 use App\Exports\TransaksiExport;
 use Maatwebsite\Excel\Facades\Excel;
+use Cloudinary\Cloudinary;
 
 
 class AdminController extends Controller
@@ -296,9 +297,16 @@ public function exportPdf(Request $request)
         ]);
 
         // Upload ke Cloudinary
-        $uploadedFileUrl = cloudinary()->upload($request->file('gambar')->getRealPath(), [
+        // 1. Panggil Cloudinary menggunakan URL dari .env
+        $cloudinary = new Cloudinary(env('CLOUDINARY_URL'));
+
+        // 2. Eksekusi Upload
+        $uploadResult = $cloudinary->uploadApi()->upload($request->file('gambar')->getRealPath(), [
             'folder' => 'plushie_shop'
-        ])->getSecurePath();
+        ]);
+
+        // 3. Ambil URL aman (HTTPS) dari hasil upload
+        $uploadedFileUrl = $uploadResult['secure_url'];
 
         // Simpan ke Database
         \App\Models\Product::create([
@@ -356,9 +364,11 @@ public function exportPdf(Request $request)
 
         // Cek apakah admin mengunggah gambar baru
         if ($request->hasFile('gambar')) {
-            $uploadedFileUrl = cloudinary()->upload($request->file('gambar')->getRealPath(), [
+            $cloudinary = new Cloudinary(env('CLOUDINARY_URL'));
+            $uploadResult = $cloudinary->uploadApi()->upload($request->file('gambar')->getRealPath(), [
                 'folder' => 'plushie_shop'
-            ])->getSecurePath();
+            ]);
+            $uploadedFileUrl = $uploadResult['secure_url'];
             
             $product->gambar = $uploadedFileUrl;
         }

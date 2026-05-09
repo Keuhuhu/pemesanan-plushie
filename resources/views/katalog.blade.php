@@ -55,7 +55,11 @@
             width: 100%; height: 280px; background: #f8f9fa; overflow: hidden; position: relative;
         }
         .product-image img {
-            width: 100%; height: 100%; object-fit: cover; transition: transform 0.5s ease;
+            width: 100%; 
+            height: 250px; 
+            object-fit: cover; 
+            object-position:center 
+            transition:transform 0.5s ease;
         }
         .product-card:hover .product-image img { transform: scale(1.05); } /* Efek zoom tipis saat dihover */
 
