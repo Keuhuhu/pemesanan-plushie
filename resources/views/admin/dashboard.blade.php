@@ -436,6 +436,14 @@
                         </li>
                     </ul>
                 </nav>
+                <div class="logout-container" style="padding: 20px; border-top: 1px solid rgba(255, 255, 255, 0.1);">
+                    <form action="{{ route('logout') }}" method="POST">
+                        @csrf
+                        <button type="submit" class="approve-btn btn-red" style="width: 100%; display: flex; align-items: center; justify-content: center; gap: 8px; padding: 12px; font-size: 14px; font-weight: bold; border-radius: 8px;">
+                            <i class="fa-solid fa-right-from-bracket"></i> Keluar
+                        </button>
+                    </form>
+                </div>
             </div>
         </aside>
 
