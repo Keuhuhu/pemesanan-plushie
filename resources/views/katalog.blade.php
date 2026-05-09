@@ -58,7 +58,7 @@
             width: 100%; 
             height: 100%; 
             object-fit: cover; 
-            object-position:center 
+            object-position:center;
             transition:transform 0.5s ease;
         }
         .product-card:hover .product-image img { transform: scale(1.05); } /* Efek zoom tipis saat dihover */
