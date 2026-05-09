@@ -50,6 +50,6 @@ class RegisteredUserController extends Controller
         Auth::login($user);
 
         // Nanti bisa diubah redirect-nya ke route('katalog') jika sudah dibuat
-        return redirect(route('/katalog', absolute: false));
+        return redirect(url('/katalog', absolute: false));
     }
 }
