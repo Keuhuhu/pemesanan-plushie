@@ -7,7 +7,7 @@ use App\Models\userplush;
 use App\Models\product;
 
 
-class cart extends Model
+class Cart extends Model
 {
     protected $fillable = [
         'user_id',
