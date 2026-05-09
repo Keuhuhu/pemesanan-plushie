@@ -17,7 +17,7 @@ class AdminController extends Controller
     public function index()
     {
         // Mengambil transaksi yang berstatus 'pending'
-        $orders = Transaksi::with('user')->where('status', 'pending')->get();
+        $orders = transaksi::with('user')->where('status', 'pending')->get();
         
         // Penanda bahwa kita sedang di halaman pending
         $tipe = 'pending'; 
