@@ -422,7 +422,7 @@
         <aside class="sidebar">
             <div>
                 <div class="admin-profile">
-                    <img src="#" alt="Admin" class="profile-img">
+                    <img src="images/admin-profile.jpg" alt="Admin" class="profile-img" style="border-radius: 50%; width: 50px; height: 50px; object-fit: cover;">
                     <div class="text-group"><h3>Admin Plush</h3></div>
                 </div>
                 <nav class="sidebar-nav">
