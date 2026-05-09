@@ -38,7 +38,7 @@
 
         /* Main Content */
         .main-content { flex: 1; padding: 40px; overflow-y: auto; }
-        .products-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(150px, 1fr)); gap: 30px; }
+        .products-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(180px, 1fr)); gap: 30px; }
 
         /* Product Card & Animations */
         .product-card {
