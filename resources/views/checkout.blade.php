@@ -211,9 +211,13 @@
                 <div class="summary-item">
                     <div class="item-img">
                         @if($cart->product->gambar)
-                            <img src="{{ asset('images/' . $cart->product->gambar) }}" alt="{{ $cart->product->nama }}">
+                            @if(\Illuminate\Support\Str::startsWith($cart->product->gambar, ['http://', 'https://']))
+                                <img src="{{ $cart->product->gambar }}" alt="{{ $cart->product->nama }}">
+                            @else
+                                <img src="{{ asset('images/' . $cart->product->gambar) }}" alt="{{ $cart->product->nama }}">
+                            @endif
                         @else
-                            <img src="https://via.placeholder.com/65x65/fce4e6/8c2a38?text={{ urlencode(substr($cart->product->nama, 0, 3)) }}" alt="{{ $cart->product->nama }}">
+                            <img src="https://via.placeholder.com/100x100/fce4e6/8c2a38?text={{ urlencode(substr($cart->product->nama, 0, 3)) }}" alt="{{ $cart->product->nama }}">
                         @endif
                     </div>
                     <div class="item-info">

@@ -10,6 +10,7 @@ use Barryvdh\DomPDF\Facade\Pdf;
 use App\Exports\TransaksiExport;
 use Maatwebsite\Excel\Facades\Excel;
 
+
 class AdminController extends Controller
 {
     // 1. Fungsi untuk menampilkan halaman Pending Orders (Default Dashboard)
@@ -294,17 +295,18 @@ public function exportPdf(Request $request)
             'gambar' => 'required|image|mimes:jpeg,png,jpg,webp|max:2048', // Maksimal 2MB
         ]);
 
-        // Proses Upload Gambar ke folder public/images
-        $namaGambar = time() . '.' . $request->gambar->extension();  
-        $request->gambar->move(public_path('images'), $namaGambar);
+        // Upload ke Cloudinary
+        $uploadedFileUrl = cloudinary()->upload($request->file('gambar')->getRealPath(), [
+            'folder' => 'plushie_shop'
+        ])->getSecurePath();
 
-        // Simpan data ke database
+        // Simpan ke Database
         \App\Models\Product::create([
             'nama' => $request->nama,
             'kategori' => $request->kategori,
             'harga' => $request->harga,
             'stock' => $request->stock,
-            'gambar' => $namaGambar, 
+            'gambar' => $uploadedFileUrl, // Menyimpan link panjang Cloudinary
         ]);
 
         return redirect()->route('admin.products')->with('success', 'Plushie baru berhasil ditambahkan ke katalog!');
@@ -354,13 +356,12 @@ public function exportPdf(Request $request)
 
         // Cek apakah admin mengunggah gambar baru
         if ($request->hasFile('gambar')) {
-            $namaGambar = time() . '.' . $request->gambar->extension();  
-            $request->gambar->move(public_path('images'), $namaGambar);
+            $uploadedFileUrl = cloudinary()->upload($request->file('gambar')->getRealPath(), [
+                'folder' => 'plushie_shop'
+            ])->getSecurePath();
             
-            // Timpa nama gambar lama dengan yang baru
-            $product->gambar = $namaGambar;
+            $product->gambar = $uploadedFileUrl;
         }
-
         $product->save();
 
         return redirect()->route('admin.products')->with('success', 'Detail plushie berhasil diperbarui!');

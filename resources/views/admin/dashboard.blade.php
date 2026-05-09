@@ -578,7 +578,16 @@
                             @foreach($products as $p)
                             <tr>
                                 <td>
-                                    <img src="{{ asset('images/' . $p->gambar) }}" alt="{{ $p->nama_produk }}" style="width: 50px; height: 50px; object-fit: cover; border-radius: 8px;">
+        <!--GANTI KE CLOUDINARY -->
+                                    @if($p->gambar)
+                                        @if(\Illuminate\Support\Str::startsWith($p->gambar, ['http://', 'https://']))
+                                            <img src="{{ $p->gambar }}" alt="{{ $p->nama }}" style="width: 50px; height: 50px; object-fit: cover; border-radius: 8px;">
+                                        @else
+                                            <img src="{{ asset('images/' . $p->gambar) }}" alt="{{ $p->nama }}" style="width: 50px; height: 50px; object-fit: cover; border-radius: 8px;">
+                                        @endif
+                                    @else
+                                        <div style="width: 50px; height: 50px; background: #eee; border-radius: 8px;"></div>
+                                    @endif
                                 </td>
                                 <td style="font-weight: 600;">{{ $p->nama }}</td>
                                 <td>Rp {{ number_format($p->harga, 0, ',', '.') }}</td>
@@ -689,12 +698,19 @@
                             <div class="form-group" style="position: relative; z-index: 1;">
                                 <label>Ganti Foto Produk (Opsional - Kosongkan jika foto tidak diubah)</label>
                                 <input type="file" name="gambar" class="form-control" accept="image/*" style="padding: 9px;">
+                                
                                 @if($product->gambar)
                                     <div style="margin-top: 10px; font-size: 13px; color: #666; display: flex; align-items: center; gap: 10px;">
-                                        Foto saat ini: <img src="{{ asset('images/' . $product->gambar) }}" alt="{{ $product->nama }}" style="width: 50px; height: 50px; object-fit: cover; border-radius: 8px;">
+                                        Foto saat ini:
+                                        @if(\Illuminate\Support\Str::startsWith($product->gambar, ['http://', 'https://']))
+                                            <img src="{{ $product->gambar }}" alt="{{ $product->nama }}" style="width: 50px; height: 50px; object-fit: cover; border-radius: 8px;">
+                                        @else
+                                            <img src="{{ asset('images/' . $product->gambar) }}" alt="{{ $product->nama }}" style="width: 50px; height: 50px; object-fit: cover; border-radius: 8px;">
+                                        @endif
                                     </div>
                                 @endif
                             </div>
+
                             <button type="submit" class="btn-submit" style="position: relative; z-index: 1;">Perbarui Katalog</button>
                         </form>
                     </div>

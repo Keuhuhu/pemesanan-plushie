@@ -133,9 +133,13 @@
                     <div class="product-card anim-card">
                         <div class="product-image">
                             @if($product->gambar)
-                                <img src="{{ asset('images/' . $product->gambar) }}" alt="{{ $product->nama }}">
+                                @if(\Illuminate\Support\Str::startsWith($product->gambar, ['http://', 'https://']))
+                                    <img src="{{ $product->gambar }}" alt="{{ $product->nama }}" style="width: 100%; height: 250px; object-fit: cover;">
+                                @else
+                                    <img src="{{ asset('images/' . $product->gambar) }}" alt="{{ $product->nama }}" style="width: 100%; height: 250px; object-fit: cover;">
+                                @endif
                             @else
-                                <img src="https://via.placeholder.com/220x260/fce4e6/8c2a38?text={{ urlencode($product->nama) }}" alt="{{ $product->nama }}">
+                                <img src="https://via.placeholder.com/250x250/fce4e6/8c2a38?text={{ urlencode(substr($product->nama, 0, 5)) }}" alt="{{ $product->nama }}" style="width: 100%; height: 250px; object-fit: cover;">
                             @endif
                         </div>
                         <div class="product-info">
