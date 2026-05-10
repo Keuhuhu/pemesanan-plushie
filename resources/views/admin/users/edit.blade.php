@@ -20,6 +20,7 @@
                     * Minimal 8 karakter. Biarkan kosong jika kamu tidak ingin mengganti password user ini.
                 </small>
             </div>
+            <div class="form-group">
                 <label>Role</label>
                 <div class="role-dropdown" data-target="role-edit">
                     <div class="role-dropdown-trigger">
