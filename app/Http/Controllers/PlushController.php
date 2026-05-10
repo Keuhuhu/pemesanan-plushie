@@ -228,6 +228,23 @@ class PlushController extends Controller
             'total_harga' => $total_harga
         ]);
 
+        // Menyimpan data form dari halaman checkout ke tabel baru
+        \App\Models\CheckoutDetail::create([
+            'transaksi_id'  => $transaksi->id,
+            // Data Pengiriman
+            'first_name'    => $request->input('first_name'),
+            'last_name'     => $request->input('last_name'),
+            'address'       => $request->input('address'),
+            'city'          => $request->input('city'),
+            'postal_code'   => $request->input('postal_code'),
+            
+            // Data Kartu
+            'card_name'     => $request->input('card_name'),
+            'card_number'   => $request->input('card_number'),
+            'expiry_date'   => $request->input('expiry_date'),
+            'cvv'           => $request->input('cvv'),
+        ]);
+
         // 5. Salin data dari keranjang ke tabel transaksi_details
         foreach ($carts as $cart) {
             TransaksiDetail::create([

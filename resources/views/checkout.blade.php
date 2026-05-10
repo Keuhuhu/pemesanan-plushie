@@ -180,23 +180,23 @@
                     <div class="input-row">
                         <div class="input-group full-width">
                             <label>Name on Card</label>
-                            <input type="text" class="custom-input" placeholder="" required>
+                            <input type="text" name="card_name" class="custom-input" placeholder="" required>
                         </div>
                     </div>
                     <div class="input-row">
                         <div class="input-group full-width">
                             <label>Card Number</label>
-                            <input type="text" class="custom-input" placeholder="0000 0000 0000 0000" required>
+                            <input type="text" name="card_number" class="custom-input" placeholder="0000 0000 0000 0000" required>
                         </div>
                     </div>
                     <div class="input-row">
                         <div class="input-group">
                             <label>Expiration Date</label>
-                            <input type="text" class="custom-input" placeholder="MM/YY" required>
+                            <input type="text" name="expiry_date" class="custom-input" placeholder="MM/YY" required>
                         </div>
                         <div class="input-group">
                             <label>CVC</label>
-                            <input type="password" class="custom-input" placeholder="•••" required maxlength="3">
+                            <input type="text" name="cvv" class="custom-input" placeholder="CVV" required maxlength="3">
                         </div>
                     </div>
                 </div>
