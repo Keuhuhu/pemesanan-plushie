@@ -856,12 +856,6 @@
 
                 @elseif($tipe == 'all' || $tipe == 'pending' || $tipe == 'approved')
                     <div class="section-header">
-                        <h3>
-                            @if($tipe == 'all') Riwayat Transaksi 
-                            @elseif($tipe == 'pending') Transaksi Menunggu Persetujuan
-                            @elseif($tipe == 'approved') Transaksi Disetujui
-                            @endif
-                        </h3>
                         <div style="display: flex; gap: 20px; margin-bottom: 25px; margin-top: 15px;">
                         <div style="flex: 1; background: white; padding: 20px; border-radius: 12px; border-left: 5px solid #28a745; box-shadow: 0 4px 12px rgba(0,0,0,0.05);">
                             <p style="margin: 0 0 5px 0; color: #6c757d; font-size: 13px; font-weight: 600; text-transform: uppercase;">Total Sukses</p>
