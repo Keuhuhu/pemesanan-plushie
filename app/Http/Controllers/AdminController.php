@@ -268,7 +268,7 @@ public function exportPdf(Request $request)
     }
 
     //Menampilkan Daftar Produk
-    public function products()
+    public function products(Request $request)
     {
         // 1. Tangkap kata kunci kategori yang diklik admin dari URL (jika ada)
         $kategoriFilter = $request->input('kategori');
