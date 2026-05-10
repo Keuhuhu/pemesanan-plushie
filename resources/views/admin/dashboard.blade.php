@@ -572,12 +572,40 @@
                             <i class="fa-solid fa-plus"></i> Tambah Produk
                         </a>
                     </div>
+                    
+                    <div style="margin-bottom: 20px; background: #f8f9fa; padding: 15px; border-radius: 8px; border: 1px solid #ddd; display: flex; justify-content: flex-end;">
+                        <form action="{{ route('admin.products') }}" method="GET" style="display: flex; gap: 15px; align-items: center;">
+                            <label for="kategori" style="font-size: 13px; font-weight: bold; margin: 0;">
+                                <i class="fa-solid fa-filter"></i> Filter Kategori:
+                            </label>
+                            
+                            <select name="kategori" id="kategori" onchange="this.form.submit()" class="form-control" style="padding: 8px; width: 250px;">
+                                <option value="">Semua Kategori</option>
+                                
+                                @if(isset($kategoris))
+                                    @foreach($kategoris as $kat)
+                                        @if($kat)
+                                            <option value="{{ $kat }}" {{ (isset($kategoriFilter) && $kategoriFilter == $kat) ? 'selected' : '' }}>
+                                                {{ ucfirst($kat) }}
+                                            </option>
+                                        @endif
+                                    @endforeach
+                                @endif
+                            </select>
+                            
+                            @if(isset($kategoriFilter) && $kategoriFilter != '')
+                                <a href="{{ route('admin.products') }}" class="approve-btn" style="background-color: #6c757d; text-decoration: none; padding: 9px 15px;">
+                                    Reset
+                                </a>
+                            @endif
+                        </form>
+                    </div>
                     <table class="data-table">
                         <thead>
                             <tr>
                                 <th>GAMBAR</th>
                                 <th>NAMA PRODUK</th>
-                                <th>HARGA</th>
+                                <th>KATEGORI</th> <th>HARGA</th>
                                 <th>STOK</th>
                                 <th>ACTION</th>
                             </tr>
@@ -586,7 +614,7 @@
                             @foreach($products as $p)
                             <tr>
                                 <td>
-        <!--GANTI KE CLOUDINARY -->
+<!--LOGIKA CLOUDINARY -->
                                     @if($p->gambar)
                                         @if(\Illuminate\Support\Str::startsWith($p->gambar, ['http://', 'https://']))
                                             <img src="{{ $p->gambar }}" alt="{{ $p->nama }}" style="width: 50px; height: 50px; object-fit: cover; border-radius: 8px;">
@@ -598,6 +626,13 @@
                                     @endif
                                 </td>
                                 <td style="font-weight: 600;">{{ $p->nama }}</td>
+                                
+                                <td>
+                                    <span style="background-color: #e2e8f0; color: #4a5568; padding: 4px 8px; border-radius: 4px; font-size: 11px; font-weight: bold;">
+                                        {{ ucfirst($p->kategori ?? 'Tanpa Kategori') }}
+                                    </span>
+                                </td>
+                                
                                 <td>Rp {{ number_format($p->harga, 0, ',', '.') }}</td>
                                 <td>
                                     <span class="status-badge {{ $p->stok > 5 ? 'delivered' : 'pending' }}">

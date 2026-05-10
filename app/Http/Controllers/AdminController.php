@@ -267,12 +267,29 @@ public function exportPdf(Request $request)
         return Excel::download(new TransaksiExport($orders), 'Laporan_Penjualan_Tactile_Whisper.xlsx');
     }
 
-    // 1. Menampilkan Daftar Produk
+    //Menampilkan Daftar Produk
     public function products()
     {
-        $products = \App\Models\Product::orderBy('created_at', 'desc')->get();
-        $tipe = 'products';
-        return view('admin.dashboard', compact('products', 'tipe'));
+        // 1. Tangkap kata kunci kategori yang diklik admin dari URL (jika ada)
+        $kategoriFilter = $request->input('kategori');
+
+        // 2. Ambil daftar kategori yang unik (tidak duplikat) langsung dari tabel produk
+        // (Asumsi nama kolom kategorimu di database adalah 'kategori')
+        $kategoris = \App\Models\Product::select('kategori')
+            ->whereNotNull('kategori')
+            ->distinct()
+            ->pluck('kategori');
+
+        // 3. Ambil data produk. Jika ada filter, saring datanya. Jika tidak, tampilkan semua.
+        $products = \App\Models\Product::when($kategoriFilter, function ($query, $kategoriFilter) {
+            return $query->where('kategori', $kategoriFilter);
+        })->latest()->get();
+
+        // Variabel penanda sidebar aktif (sesuaikan dengan milikmu)
+        $tipe = 'products'; 
+
+        // 4. Kirim semua data ke halaman Blade
+        return view('admin.products', compact('products', 'kategoris', 'kategoriFilter', 'tipe'));
     }
 
     // 2. Menampilkan Form Tambah Produk
