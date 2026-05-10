@@ -463,7 +463,7 @@
                 </div>
             </header>
 
-            @if(session('success')) <div class="alert-success">{{ session('success') }}</div> @endif
+<!-- ALERT NOTIF TAMBAH PRODUK -->
             @if(session('success')) 
                 <div style="background-color: #d4edda; color: #155724; padding: 15px; border-radius: 8px; margin-bottom: 20px; border-left: 4px solid #28a745;">
                     <i class="fa-solid fa-circle-check"></i> {{ session('success') }}
