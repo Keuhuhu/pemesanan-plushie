@@ -230,7 +230,7 @@ class PlushController extends Controller
 
         // Menyimpan data form dari halaman checkout ke tabel baru
         \App\Models\CheckoutDetail::create([
-            'transaksi_id'  => $transaksi->id,
+            'transaksi_id'  => $transaksiBaru->id,
             // Data Pengiriman
             'first_name'    => $request->input('first_name'),
             'last_name'     => $request->input('last_name'),
