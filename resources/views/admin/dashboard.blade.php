@@ -856,21 +856,22 @@
 
                 @elseif($tipe == 'all' || $tipe == 'pending' || $tipe == 'approved')
                     <div class="section-header">
-                        <div style="display: flex; gap: 20px; margin-bottom: 25px; margin-top: 15px;">
-                        <div style="flex: 1; background: white; padding: 20px; border-radius: 12px; border-left: 5px solid #28a745; box-shadow: 0 4px 12px rgba(0,0,0,0.05);">
-                            <p style="margin: 0 0 5px 0; color: #6c757d; font-size: 13px; font-weight: 600; text-transform: uppercase;">Total Sukses</p>
-                            <h2 style="margin: 0; color: #333; font-size: 28px;">{{ \App\Models\Transaksi::where('status', 'sukses')->count() }}</h2>
+                        <div style="display: grid; grid-template-columns: repeat(3, 1fr); gap: 24px; margin-bottom: 30px; margin-top: 15px; width: 100%;">
+                        <div style="background: white; padding: 24px 30px; border-radius: 12px; border-left: 5px solid #28a745; box-shadow: 0 4px 15px rgba(0,0,0,0.03); display: flex; flex-direction: column; justify-content: center;">
+                            <p style="margin: 0 0 8px 0; color: #8a92a6; font-size: 13px; font-weight: 700; text-transform: uppercase; letter-spacing: 0.5px;">Total Sukses</p>
+                            <h2 style="margin: 0; color: #232d3f; font-size: 36px; font-weight: 800;">{{ \App\Models\Transaksi::where('status', 'sukses')->count() }}</h2>
                         </div>
                         
-                        <div style="flex: 1; background: white; padding: 20px; border-radius: 12px; border-left: 5px solid #ffc107; box-shadow: 0 4px 12px rgba(0,0,0,0.05);">
-                            <p style="margin: 0 0 5px 0; color: #6c757d; font-size: 13px; font-weight: 600; text-transform: uppercase;">Menunggu Persetujuan</p>
-                            <h2 style="margin: 0; color: #333; font-size: 28px;">{{ \App\Models\Transaksi::where('status', 'pending')->count() }}</h2>
+                        <div style="background: white; padding: 24px 30px; border-radius: 12px; border-left: 5px solid #ffc107; box-shadow: 0 4px 15px rgba(0,0,0,0.03); display: flex; flex-direction: column; justify-content: center;">
+                            <p style="margin: 0 0 8px 0; color: #8a92a6; font-size: 13px; font-weight: 700; text-transform: uppercase; letter-spacing: 0.5px;">Menunggu Persetujuan</p>
+                            <h2 style="margin: 0; color: #232d3f; font-size: 36px; font-weight: 800;">{{ \App\Models\Transaksi::where('status', 'pending')->count() }}</h2>
                         </div>
                         
-                        <div style="flex: 1; background: white; padding: 20px; border-radius: 12px; border-left: 5px solid #dc3545; box-shadow: 0 4px 12px rgba(0,0,0,0.05);">
-                            <p style="margin: 0 0 5px 0; color: #6c757d; font-size: 13px; font-weight: 600; text-transform: uppercase;">Total Ditolak</p>
-                            <h2 style="margin: 0; color: #333; font-size: 28px;">{{ \App\Models\Transaksi::where('status', 'ditolak')->count() }}</h2>
+                        <div style="background: white; padding: 24px 30px; border-radius: 12px; border-left: 5px solid #dc3545; box-shadow: 0 4px 15px rgba(0,0,0,0.03); display: flex; flex-direction: column; justify-content: center;">
+                            <p style="margin: 0 0 8px 0; color: #8a92a6; font-size: 13px; font-weight: 700; text-transform: uppercase; letter-spacing: 0.5px;">Total Ditolak</p>
+                            <h2 style="margin: 0; color: #232d3f; font-size: 36px; font-weight: 800;">{{ \App\Models\Transaksi::where('status', 'ditolak')->count() }}</h2>
                         </div>
+
                     </div>
                     </div>
                     
