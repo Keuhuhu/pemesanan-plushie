@@ -574,12 +574,6 @@
                     </div>
                     
                     <div style="margin-bottom: 20px; background: #f8f9fa; padding: 15px; border-radius: 8px; border: 1px solid #ddd; display: flex; justify-content: flex-end;">
-                        <form action="{{ route('admin.products') }}" method="GET" style="display: flex; gap: 15px; align-items: center;">
-                            <label for="kategori" style="font-size: 13px; font-weight: bold; margin: 0;">
-                                <i class="fa-solid fa-filter"></i> Filter Kategori:
-                            </label>
-                            
-                            <div style="margin-bottom: 20px; background: #f8f9fa; padding: 15px; border-radius: 8px; border: 1px solid #ddd; display: flex; justify-content: flex-end;">
                         <form action="{{ route('admin.products') }}" method="GET" id="filterForm" style="display: flex; gap: 15px; align-items: center;">
                             <label style="font-size: 13px; font-weight: bold; margin: 0; color: #4a5568;">
                                 <i class="fa-solid fa-filter"></i> Filter Kategori:
@@ -617,14 +611,7 @@
                             @endif
                         </form>
                     </div>
-                            
-                            @if(isset($kategoriFilter) && $kategoriFilter != '')
-                                <a href="{{ route('admin.products') }}" class="approve-btn" style="background-color: #6c757d; text-decoration: none; padding: 9px 15px;">
-                                    Reset
-                                </a>
-                            @endif
-                        </form>
-                    </div>
+                    
                     <table class="data-table">
                         <thead>
                             <tr>
