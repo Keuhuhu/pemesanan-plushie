@@ -579,19 +579,44 @@
                                 <i class="fa-solid fa-filter"></i> Filter Kategori:
                             </label>
                             
-                            <select name="kategori" id="kategori" onchange="this.form.submit()" class="form-control" style="padding: 8px; width: 250px;">
-                                <option value="">Semua Kategori</option>
+                            <div style="margin-bottom: 20px; background: #f8f9fa; padding: 15px; border-radius: 8px; border: 1px solid #ddd; display: flex; justify-content: flex-end;">
+                        <form action="{{ route('admin.products') }}" method="GET" id="filterForm" style="display: flex; gap: 15px; align-items: center;">
+                            <label style="font-size: 13px; font-weight: bold; margin: 0; color: #4a5568;">
+                                <i class="fa-solid fa-filter"></i> Filter Kategori:
+                            </label>
+                            
+                            <div class="custom-dropdown" id="kategoriDropdown">
+                                <div class="dropdown-trigger">
+                                    <span id="dropdown-text">
+                                        {{ isset($kategoriFilter) && $kategoriFilter != '' ? ucfirst($kategoriFilter) : 'Semua Kategori' }}
+                                    </span>
+                                    <i class="fa-solid fa-chevron-down arrow-icon"></i>
+                                </div>
                                 
-                                @if(isset($kategoris))
-                                    @foreach($kategoris as $kat)
-                                        @if($kat)
-                                            <option value="{{ $kat }}" {{ (isset($kategoriFilter) && $kategoriFilter == $kat) ? 'selected' : '' }}>
-                                                {{ ucfirst($kat) }}
-                                            </option>
-                                        @endif
-                                    @endforeach
-                                @endif
-                            </select>
+                                <ul class="dropdown-menu">
+                                    <li class="dropdown-item {{ empty($kategoriFilter) ? 'active' : '' }}" data-value="">Semua Kategori</li>
+                                    
+                                    @if(isset($kategoris))
+                                        @foreach($kategoris as $kat)
+                                            @if($kat)
+                                                <li class="dropdown-item {{ (isset($kategoriFilter) && $kategoriFilter == $kat) ? 'active' : '' }}" data-value="{{ $kat }}">
+                                                    {{ ucfirst($kat) }}
+                                                </li>
+                                            @endif
+                                        @endforeach
+                                    @endif
+                                </ul>
+                                
+                                <input type="hidden" name="kategori" id="hidden-kategori" value="{{ $kategoriFilter ?? '' }}">
+                            </div>
+                            
+                            @if(isset($kategoriFilter) && $kategoriFilter != '')
+                                <a href="{{ route('admin.products') }}" class="approve-btn" style="background-color: #6c757d; text-decoration: none; padding: 10px 15px; border-radius: 10px;">
+                                    Reset
+                                </a>
+                            @endif
+                        </form>
+                    </div>
                             
                             @if(isset($kategoriFilter) && $kategoriFilter != '')
                                 <a href="{{ route('admin.products') }}" class="approve-btn" style="background-color: #6c757d; text-decoration: none; padding: 9px 15px;">
