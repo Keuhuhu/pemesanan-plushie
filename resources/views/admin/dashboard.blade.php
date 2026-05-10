@@ -120,10 +120,24 @@
                                 </div>
                             <div class="form-group">
                                 <label>Role</label>
-                                <select name="role" class="form-control" required>
-                                    <option value="user">User</option>
-                                    <option value="admin">Admin</option>
-                                </select>
+                                <div class="role-dropdown" data-target="role-create">
+                                    <div class="role-dropdown-trigger">
+                                        <div class="role-dropdown-selected">
+                                            <i class="fa-solid fa-user role-dropdown-icon"></i>
+                                            <span class="role-dropdown-text">User</span>
+                                        </div>
+                                        <i class="fa-solid fa-chevron-down role-dropdown-arrow"></i>
+                                    </div>
+                                    <ul class="role-dropdown-menu">
+                                        <li class="role-dropdown-option active" data-value="user" data-icon="fa-user">
+                                            <i class="fa-solid fa-user"></i> User
+                                        </li>
+                                        <li class="role-dropdown-option" data-value="admin" data-icon="fa-shield-halved">
+                                            <i class="fa-solid fa-shield-halved"></i> Admin
+                                        </li>
+                                    </ul>
+                                    <input type="hidden" name="role" id="role-create" value="user" required>
+                                </div>
                             </div>
                             <button type="submit" class="btn-submit">Simpan User</button>
                         </form>
@@ -147,10 +161,24 @@
                                 </small>
                             </div>
                                 <label>Role</label>
-                                <select name="role" class="form-control" required>
-                                    <option value="user" {{ $editUser->role == 'user' ? 'selected' : '' }}>User</option>
-                                    <option value="admin" {{ $editUser->role == 'admin' ? 'selected' : '' }}>Admin</option>
-                                </select>
+                                <div class="role-dropdown" data-target="role-edit">
+                                    <div class="role-dropdown-trigger">
+                                        <div class="role-dropdown-selected">
+                                            <i class="fa-solid {{ $editUser->role == 'admin' ? 'fa-shield-halved' : 'fa-user' }} role-dropdown-icon"></i>
+                                            <span class="role-dropdown-text">{{ $editUser->role == 'admin' ? 'Admin' : 'User' }}</span>
+                                        </div>
+                                        <i class="fa-solid fa-chevron-down role-dropdown-arrow"></i>
+                                    </div>
+                                    <ul class="role-dropdown-menu">
+                                        <li class="role-dropdown-option {{ $editUser->role == 'user' ? 'active' : '' }}" data-value="user" data-icon="fa-user">
+                                            <i class="fa-solid fa-user"></i> User
+                                        </li>
+                                        <li class="role-dropdown-option {{ $editUser->role == 'admin' ? 'active' : '' }}" data-value="admin" data-icon="fa-shield-halved">
+                                            <i class="fa-solid fa-shield-halved"></i> Admin
+                                        </li>
+                                    </ul>
+                                    <input type="hidden" name="role" id="role-edit" value="{{ $editUser->role }}" required>
+                                </div>
                             </div>
                             <button type="submit" class="btn-submit">Update Data User</button>
                         </form>
@@ -622,6 +650,68 @@
                     }
                 });
             }
+        });
+    </script>
+
+    <script>
+        // E. Custom Role Dropdown Logic
+        document.addEventListener('DOMContentLoaded', function() {
+            document.querySelectorAll('.role-dropdown').forEach(dropdown => {
+                const trigger = dropdown.querySelector('.role-dropdown-trigger');
+                const menu = dropdown.querySelector('.role-dropdown-menu');
+                const options = dropdown.querySelectorAll('.role-dropdown-option');
+                const textEl = dropdown.querySelector('.role-dropdown-text');
+                const iconEl = dropdown.querySelector('.role-dropdown-icon');
+                const hiddenInput = document.getElementById(dropdown.dataset.target);
+
+                // Toggle open/close with animation
+                trigger.addEventListener('click', function(e) {
+                    e.stopPropagation();
+                    // Close all other role dropdowns first
+                    document.querySelectorAll('.role-dropdown.open').forEach(d => {
+                        if (d !== dropdown) d.classList.remove('open');
+                    });
+                    dropdown.classList.toggle('open');
+                });
+
+                // Select an option
+                options.forEach(option => {
+                    option.addEventListener('click', function() {
+                        const val = this.dataset.value;
+                        const icon = this.dataset.icon;
+
+                        // Update hidden input
+                        hiddenInput.value = val;
+
+                        // Update display text & icon with micro-animation
+                        textEl.style.opacity = '0';
+                        textEl.style.transform = 'translateY(-5px)';
+                        iconEl.style.opacity = '0';
+
+                        setTimeout(() => {
+                            textEl.textContent = this.textContent.trim();
+                            iconEl.className = 'fa-solid fa-' + icon + ' role-dropdown-icon';
+                            textEl.style.opacity = '1';
+                            textEl.style.transform = 'translateY(0)';
+                            iconEl.style.opacity = '1';
+                        }, 150);
+
+                        // Update active state
+                        options.forEach(o => o.classList.remove('active'));
+                        this.classList.add('active');
+
+                        // Close dropdown
+                        dropdown.classList.remove('open');
+                    });
+                });
+
+                // Close when clicking outside
+                window.addEventListener('click', function(e) {
+                    if (!dropdown.contains(e.target)) {
+                        dropdown.classList.remove('open');
+                    }
+                });
+            });
         });
     </script>
 </body>
