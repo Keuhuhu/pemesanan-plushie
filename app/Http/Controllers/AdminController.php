@@ -19,11 +19,8 @@ class AdminController extends Controller
     {
         // Mengambil transaksi yang berstatus 'pending'
         $orders = Transaksi::with('user')->where('status', 'pending')->get();
-        
-        // Penanda bahwa kita sedang di halaman pending
-        $tipe = 'pending'; 
 
-        return view('admin.dashboard', compact('orders', 'tipe'));
+        return view('admin.pending', compact('orders'));
     }
 
     // 2. Fungsi BARU untuk menampilkan halaman Approved Orders
@@ -31,11 +28,8 @@ class AdminController extends Controller
     {
         // Mengambil transaksi yang berstatus 'sukses'
         $orders = Transaksi::with('user')->where('status', 'sukses')->get();
-        
-        // Penanda bahwa kita sedang di halaman approved
-        $tipe = 'approved'; 
 
-        return view('admin.dashboard', compact('orders', 'tipe'));
+        return view('admin.approved', compact('orders'));
     }
 
     // 3. Fungsi untuk mengubah status saat tombol Approve ditekan
@@ -97,9 +91,8 @@ class AdminController extends Controller
         }
 
         $orders = $query->orderBy('created_at', 'desc')->get();
-        $tipe = 'all'; 
 
-        return view('admin.dashboard', compact('orders', 'tipe'));
+        return view('admin.all', compact('orders'));
     }
 
 
@@ -108,9 +101,8 @@ class AdminController extends Controller
     {
         // Mengambil semua data user dari tabel users
         $users = \App\Models\userplush::all();
-        $tipe = 'users'; // Penanda halaman aktif
 
-        return view('admin.dashboard', compact('users', 'tipe'));
+        return view('admin.users.index', compact('users'));
     }
 
     // Fungsi untuk menghapus user
@@ -132,8 +124,7 @@ class AdminController extends Controller
     // 1. Menampilkan form Tambah
     public function createUser()
     {
-        $tipe = 'create_user';
-        return view('admin.dashboard', compact('tipe'));
+        return view('admin.users.create');
     }
 
     // 2. Menyimpan data user baru ke database
@@ -160,8 +151,7 @@ class AdminController extends Controller
     public function editUser($id)
     {
         $editUser = \App\Models\userplush::findOrFail($id);
-        $tipe = 'edit_user';
-        return view('admin.dashboard', compact('editUser', 'tipe'));
+        return view('admin.users.edit', compact('editUser'));
     }
 
     // 4. Menyimpan perubahan data user
@@ -304,20 +294,16 @@ public function exportPdf(Request $request)
             return $query->where('kategori', $kategoriFilter);
         })->latest()->get();
 
-        // Variabel penanda sidebar aktif (sesuaikan dengan milikmu)
-        $tipe = 'products'; 
-
-        // 4. Kirim semua data ke halaman Blade
-        return view('admin.dashboard', compact('products', 'kategoris', 'kategoriFilter', 'tipe'));
+        // Kirim semua data ke halaman Blade
+        return view('admin.products.index', compact('products', 'kategoris', 'kategoriFilter'));
     }
 
     // 2. Menampilkan Form Tambah Produk
     public function createProduct()
     {
-        $tipe = 'create_product';
         // Ambil daftar kategori yang sudah ada di database untuk dijadikan sugesti/pilihan
         $kategoris = \App\Models\Product::select('kategori')->distinct()->pluck('kategori');
-        return view('admin.dashboard', compact('tipe', 'kategoris'));
+        return view('admin.products.create', compact('kategoris'));
     }
 
     // 3. Menyimpan Produk & Upload Gambar
@@ -369,13 +355,12 @@ public function exportPdf(Request $request)
     //EDIT PRODUK
     public function editProduct($id)
     {
-        $tipe = 'edit_product';
         $product = \App\Models\Product::findOrFail($id);
         
         // Ambil daftar kategori agar dropdown tetap berfungsi
         $kategoris = \App\Models\Product::select('kategori')->distinct()->pluck('kategori');
         
-        return view('admin.dashboard', compact('tipe', 'product', 'kategoris'));
+        return view('admin.products.edit', compact('product', 'kategoris'));
     }
 
     // Memproses penyimpanan pembaruan data
