@@ -119,7 +119,7 @@ class PlushController extends Controller
     }
 
     // Hitung pajak (misal 10.000 seperti di desainmu)
-    $taxes = 10000;
+    $taxes = 0;
     $total = $subtotal + $taxes;
 
     return view('checkout', compact('carts', 'subtotal', 'taxes', 'total'));
