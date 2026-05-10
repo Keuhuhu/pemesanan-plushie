@@ -524,7 +524,7 @@
                     <form action="{{ route('logout') }}" method="POST">
                         @csrf
                         <button type="submit" class="approve-btn btn-red" style="width: 100%; display: flex; align-items: center; justify-content: center; gap: 8px; padding: 12px; font-size: 14px; font-weight: bold; border-radius: 8px;">
-                            <i class="fa-solid fa-right-from-bracket"></i> Keluar
+                            <i class="fa-solid fa-right-from-bracket"></i> Log out
                         </button>
                     </form>
                 </div>
@@ -862,6 +862,22 @@
                             @elseif($tipe == 'approved') Transaksi Disetujui
                             @endif
                         </h3>
+                        <div style="display: flex; gap: 20px; margin-bottom: 25px; margin-top: 15px;">
+                        <div style="flex: 1; background: white; padding: 20px; border-radius: 12px; border-left: 5px solid #28a745; box-shadow: 0 4px 12px rgba(0,0,0,0.05);">
+                            <p style="margin: 0 0 5px 0; color: #6c757d; font-size: 13px; font-weight: 600; text-transform: uppercase;">Total Sukses</p>
+                            <h2 style="margin: 0; color: #333; font-size: 28px;">{{ \App\Models\Transaksi::where('status', 'sukses')->count() }}</h2>
+                        </div>
+                        
+                        <div style="flex: 1; background: white; padding: 20px; border-radius: 12px; border-left: 5px solid #ffc107; box-shadow: 0 4px 12px rgba(0,0,0,0.05);">
+                            <p style="margin: 0 0 5px 0; color: #6c757d; font-size: 13px; font-weight: 600; text-transform: uppercase;">Menunggu Persetujuan</p>
+                            <h2 style="margin: 0; color: #333; font-size: 28px;">{{ \App\Models\Transaksi::where('status', 'pending')->count() }}</h2>
+                        </div>
+                        
+                        <div style="flex: 1; background: white; padding: 20px; border-radius: 12px; border-left: 5px solid #dc3545; box-shadow: 0 4px 12px rgba(0,0,0,0.05);">
+                            <p style="margin: 0 0 5px 0; color: #6c757d; font-size: 13px; font-weight: 600; text-transform: uppercase;">Total Ditolak</p>
+                            <h2 style="margin: 0; color: #333; font-size: 28px;">{{ \App\Models\Transaksi::where('status', 'ditolak')->count() }}</h2>
+                        </div>
+                    </div>
                     </div>
                     
                     @if($tipe == 'all')
@@ -915,13 +931,28 @@
                                     {{ $order->user?->username ?? 'Deleted User' }}
                                 </td>
                                 <td style="font-weight:600;">Rp {{ number_format($order->total_harga, 0, ',', '.') }}</td>
-                                <td><span class="status-badge {{ $order->status == 'pending' ? 'pending' : 'delivered' }}">{{ strtoupper($order->status) }}</span></td>
+                                <td>
+                                    <span class="status-badge {{ $order->status == 'pending' ? 'pending' : ($order->status == 'ditolak' ? 'rejected' : 'delivered') }}" 
+                                            style="{{ $order->status == 'ditolak' ? 'background-color: #fce4e6; color: #dc3545;' : '' }}">
+                                        {{ strtoupper($order->status) }}
+                                    </span>
+                                </td>
+                                
                                 <td>
                                     @if($order->status == 'pending')
-                                        <form action="{{ route('admin.approve', $order->id) }}" method="POST">
-                                            @csrf @method('PATCH')
-                                            <button type="submit" class="approve-btn btn-green">Approve</button>
-                                        </form>
+                                        <div style="display: flex; gap: 8px;">
+                                            <form action="{{ route('admin.approve', $order->id) }}" method="POST">
+                                                @csrf @method('PATCH')
+                                                <button type="submit" class="approve-btn btn-green" title="Setujui Pesanan"><i class="fa-solid fa-check"></i></button>
+                                            </form>
+                                            
+                                            <form action="{{ route('admin.reject', $order->id) }}" method="POST" onsubmit="return confirm('Yakin ingin menolak transaksi ini?')">
+                                                @csrf @method('PATCH')
+                                                <button type="submit" class="approve-btn btn-red" title="Tolak Pesanan"><i class="fa-solid fa-xmark"></i></button>
+                                            </form>
+                                        </div>
+                                    @elseif($order->status == 'ditolak')
+                                        <span style="color:#dc3545; font-size:11px; font-weight:700;"><i class="fa-solid fa-ban"></i> Ditolak</span>
                                     @else
                                         <span style="color:#28a745; font-size:11px; font-weight:700;"><i class="fa-solid fa-check-double"></i> Verified</span>
                                     @endif

@@ -50,6 +50,25 @@ class AdminController extends Controller
         return redirect()->back()->with('success', 'Transaksi ' . $transaksi->invoice . ' berhasil disetujui!');
     }
 
+    public function reject($id)
+    {
+        // Cari data transaksi berdasarkan ID
+        $transaksi = \App\Models\Transaksi::findOrFail($id);
+        
+        // Ubah statusnya menjadi 'ditolak'
+        $transaksi->update([
+            'status' => 'ditolak'
+        ]);
+
+        /* * OPSIONAL: Jika kamu punya fitur potong stok otomatis saat checkout, 
+         * kamu bisa mengembalikan stoknya di sini dengan:
+         * $product = \App\Models\Product::find($transaksi->product_id);
+         * $product->increment('stock', $transaksi->jumlah);
+         */
+
+        return redirect()->back()->with('error', 'Transaksi berhasil ditolak dan dibatalkan.');
+    }
+
     //ALL TRANSAKSI (+FILTER)
     public function all(Request $request)
     {

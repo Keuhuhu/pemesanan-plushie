@@ -63,6 +63,7 @@ Route::get('/admin/products/{id}/edit', [\App\Http\Controllers\AdminController::
 
 // Rute untuk menyimpan perubahan data ke database (menggunakan PUT)
 Route::put('/admin/products/{id}', [\App\Http\Controllers\AdminController::class, 'updateProduct'])->name('admin.products.update');
+Route::patch('/admin/reject/{id}', [AdminController::class, 'reject'])->name('admin.reject');
 });
 
 // Route Profil Bawaan Breeze
