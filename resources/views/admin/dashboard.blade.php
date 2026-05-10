@@ -415,6 +415,90 @@
         .sidebar-nav li a:hover i {
             transform: scale(1.15);
         }
+
+        /* --- CUSTOM DROPDOWN STYLE  (KATEGORI ADMIN) --- */
+        .custom-dropdown {
+            position: relative;
+            width: 250px;
+            font-family: inherit;
+            z-index: 50; /* Memastikan dropdown menimpa tabel di bawahnya */
+        }
+
+        .dropdown-trigger {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            background: #ffffff;
+            border: 2px solid #e2e8f0;
+            border-radius: 10px;
+            padding: 10px 16px;
+            font-size: 14px;
+            font-weight: 600;
+            color: #4a5568;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        /* Efek saat dropdown terbuka */
+        .custom-dropdown.open .dropdown-trigger {
+            border-color: #a84c60; /* Warna merah khasmu */
+            box-shadow: 0 0 0 3px rgba(168, 76, 96, 0.15);
+        }
+
+        .arrow-icon {
+            transition: transform 0.4s cubic-bezier(0.68, -0.55, 0.265, 1.55); /* Animasi panah memantul */
+            color: #a0aec0;
+            font-size: 12px;
+        }
+
+        .custom-dropdown.open .arrow-icon {
+            transform: rotate(180deg);
+            color: #a84c60;
+        }
+
+        .dropdown-menu {
+            position: absolute;
+            top: calc(100% + 8px);
+            left: 0;
+            width: 100%;
+            background: #ffffff;
+            border-radius: 12px;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+            list-style: none;
+            padding: 8px;
+            margin: 0;
+            
+            /* Sihir Animasi JS */
+            opacity: 0;
+            visibility: hidden;
+            transform: translateY(-15px) scale(0.95);
+            transform-origin: top center;
+            transition: all 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+        }
+
+        .custom-dropdown.open .dropdown-menu {
+            opacity: 1;
+            visibility: visible;
+            transform: translateY(0) scale(1); /* Dropdown muncul dan membesar perlahan */
+        }
+
+        .dropdown-item {
+            padding: 10px 14px;
+            border-radius: 8px;
+            font-size: 14px;
+            color: #4a5568;
+            cursor: pointer;
+            transition: all 0.2s ease;
+            margin-bottom: 2px;
+        }
+
+        /* Efek saat opsi disorot atau dipilih */
+        .dropdown-item:hover, .dropdown-item.active {
+            background: #fff5f7;
+            color: #a84c60;
+            font-weight: 700;
+            transform: translateX(4px); /* Teks sedikit maju ke kanan */
+        }
     </style>
 </head>
 <body>
@@ -611,7 +695,7 @@
                             @endif
                         </form>
                     </div>
-                    
+
                     <table class="data-table">
                         <thead>
                             <tr>
@@ -962,6 +1046,49 @@
                 });
             }
 
+        });
+    </script>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            // Logika untuk Custom Dropdown Filter
+            const dropdown = document.getElementById('kategoriDropdown');
+            
+            if(dropdown) {
+                const trigger = dropdown.querySelector('.dropdown-trigger');
+                const items = dropdown.querySelectorAll('.dropdown-item');
+                const hiddenInput = document.getElementById('hidden-kategori');
+                const form = document.getElementById('filterForm');
+
+                // 1. Animasi buka/tutup saat diklik
+                trigger.addEventListener('click', function(e) {
+                    e.stopPropagation(); // Cegah klik bocor
+                    dropdown.classList.toggle('open');
+                });
+
+                // 2. Saat salah satu kategori diklik
+                items.forEach(item => {
+                    item.addEventListener('click', function() {
+                        const val = this.getAttribute('data-value');
+                        
+                        // Masukkan nilai kategori ke input tersembunyi
+                        hiddenInput.value = val;
+                        
+                        // Tutup animasi dropdown
+                        dropdown.classList.remove('open');
+                        
+                        // Langsung jalankan loading/submit (Mirip fitur auto-submit sebelumnya)
+                        form.submit(); 
+                    });
+                });
+
+                // 3. Tutup dropdown otomatis jika admin mengklik sembarang tempat di luar kotak
+                window.addEventListener('click', function(e) {
+                    if (!dropdown.contains(e.target)) {
+                        dropdown.classList.remove('open');
+                    }
+                });
+            }
         });
     </script>
 </body>
