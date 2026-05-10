@@ -3,6 +3,7 @@
 use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\PlushController; // Panggil PlushController
 use Illuminate\Support\Facades\Route;
+use App\Http\Controllers\AdminController;
 
 Route::redirect('/', '/register');
 
