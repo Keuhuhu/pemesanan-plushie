@@ -239,7 +239,7 @@
             </div>
             <div class="cost-row">
                 <span class="label">Taxes</span>
-                <span class="value">Rp {{ number_format($taxes, 0, ',', '.') }}</span>
+                <span class="value">Included</span>
             </div>
 
             <div class="total-row">

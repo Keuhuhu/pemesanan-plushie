@@ -165,7 +165,7 @@
                 
                 <div class="summary-row">
                     <span class="label">Taxes</span>
-                    <span class="value">Rp 0</span>
+                    <span class="value">Included</span>
                 </div>
 
                 <div class="summary-total">
