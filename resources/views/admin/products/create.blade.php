@@ -1,7 +1,7 @@
 @extends('layouts.admin')
 
-@section('pageTitle', 'Manage Customers')
-@section('pageSubtitle', 'Pantau arus transaksi masuk tokomu.')
+@section('pageTitle', 'Manage Products')
+@section('pageSubtitle', 'Pantau produk dalam tokomu.')
 
 @section('content')
     <div class="section-header">
