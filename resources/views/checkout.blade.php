@@ -120,17 +120,6 @@
 </head>
 <body>
 
-    <nav class="navbar">
-        <a href="{{ url('/katalog') }}"><i class="fa-solid fa-store"></i> Catalog</a>
-        <a href="{{ url('/cart') }}"><i class="fa-solid fa-cart-shopping"></i> Cart</a>
-        <a href="{{ url('/history') }}"><i class="fa-solid fa-clock-rotate-left"></i> History</a>
-        <form method="POST" action="{{ route('logout') }}" style="display: inline;">
-            @csrf
-            <button type="submit" style="background:none; border:none; color:#999; font-size:16px; font-weight:500; cursor:pointer; font-family:inherit; margin-left: 10px; transition: color 0.3s;">
-                <i class="fa-solid fa-right-from-bracket"></i> Logout
-            </button>
-        </form>
-    </nav>
 
     <form id="checkoutForm" class="checkout-container" action="{{ route('transaksis.store') }}" method="POST">
         @csrf
