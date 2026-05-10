@@ -32,7 +32,7 @@
 
         /* --- LAYOUT UTAMA --- */
         .checkout-container { max-width: 1100px; width: 100%; margin: 0 auto; padding: 0 30px; display: grid; grid-template-columns: 1fr 420px; gap: 40px; align-items: start;
-            padding-top:130px;}
+            padding-top:80px;}
 
         /* --- KOLOM KIRI: FORM SECTIONS --- */
         .form-sections { display: flex; flex-direction: column; gap: 30px; }
