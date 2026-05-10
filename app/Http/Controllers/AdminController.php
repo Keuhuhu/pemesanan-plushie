@@ -289,7 +289,7 @@ public function exportPdf(Request $request)
         $tipe = 'products'; 
 
         // 4. Kirim semua data ke halaman Blade
-        return view('admin.products', compact('products', 'kategoris', 'kategoriFilter', 'tipe'));
+        return view('admin.dashboard', compact('products', 'kategoris', 'kategoriFilter', 'tipe'));
     }
 
     // 2. Menampilkan Form Tambah Produk
