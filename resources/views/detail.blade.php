@@ -5,95 +5,9 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>{{ $product->nama }} - Tactile Whisper</title>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-    
-    <style>
-        /* --- RESET & ROOT VARIABEL (Sesuai Tema Tactile Whisper) --- */
-        :root {
-            --primary-pink: #f18d96;
-            --primary-dark: #8c2a38;
-            --text-dark: #333;
-            --text-gray: #666;
-            --bg-gray: #f8f9fa;
-            --font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-        }
-
-        * { margin: 0; padding: 0; box-sizing: border-box; }
-        body { font-family: var(--font-family); background-color: #f5f5f5; color: var(--text-dark); overflow-x: hidden; }
-
-        /* --- NAVBAR (Konsisten dengan Katalog) --- */
-        .navbar {
-            background-color: white; padding: 20px 40px; padding-right: 100px;
-            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05); display: flex; justify-content: flex-end; gap: 40px; position: relative; z-index: 10;
-        }
-        .navbar a { font-size: 16px; color: #999; text-decoration: none; font-weight: 500; transition: color 0.3s; }
-        .navbar a:hover, .navbar button:hover { color: var(--primary-pink); }
-
-        /* --- LAYOUT UTAMA --- */
-        .main-container {
-            max-width: 1100px; margin: 50px auto; padding: 0 30px; display: flex; gap: 60px;
-        }
-
-        /* --- KOLOM KIRI (GAMBAR) --- */
-        .left-col { flex: 1; max-width: 450px; }
-
-        .breadcrumb {
-            font-size: 14px; margin-bottom: 25px; color: var(--primary-dark); font-weight: 500;
-        }
-        .breadcrumb a { color: var(--text-gray); text-decoration: none; transition: color 0.2s; }
-        .breadcrumb a:hover { color: var(--primary-pink); }
-        .breadcrumb span { color: var(--primary-dark); font-weight: 600; }
-
-        .main-image-container {
-            background-color: white; border-radius: 20px; padding: 15px; display: flex; justify-content: center; align-items: center; 
-            height: 450px; margin-bottom: 15px; overflow: hidden; box-shadow: 0 4px 15px rgba(0,0,0,0.05);
-        }
-        .main-image-container img {
-            width: 100%; height: 100%; object-fit: cover; border-radius: 12px; transition: transform 0.4s ease;
-        }
-        .main-image-container:hover img { transform: scale(1.03); }
-
-        /* --- KOLOM KANAN (INFO PRODUK) --- */
-        .right-col { flex: 1; padding-top: 45px; }
-
-        .product-title {
-            font-size: 32px; color: var(--text-dark); font-weight: 800; margin-bottom: 15px; letter-spacing: -0.5px; line-height: 1.2;
-        }
-        .product-price {
-            font-size: 24px; color: var(--primary-dark); font-weight: 700; margin-bottom: 30px;
-        }
-        .product-desc {
-            color: var(--text-gray); font-size: 15px; line-height: 1.7; margin-bottom: 25px;
-        }
-        .product-specs {
-            background-color: white; padding: 20px; border-radius: 12px; border-left: 4px solid var(--primary-pink);
-            color: var(--text-gray); font-size: 14px; line-height: 1.8; margin-bottom: 40px; box-shadow: 0 2px 10px rgba(0,0,0,0.03);
-        }
-        .product-specs strong { color: var(--text-dark); }
-
-        /* --- TOMBOL ADD TO CART --- */
-        .add-to-cart-btn {
-            background-color: var(--primary-dark); color: white; border: none; padding: 16px 40px; border-radius: 30px; 
-            font-size: 16px; font-weight: 600; cursor: pointer; display: flex; align-items: center; justify-content: center; gap: 10px; 
-            width: fit-content; transition: all 0.3s ease; box-shadow: 0 6px 15px rgba(140, 42, 56, 0.3);
-        }
-        .add-to-cart-btn:hover {
-            background-color: var(--primary-pink); box-shadow: 0 8px 20px rgba(241, 141, 150, 0.4); transform: translateY(-3px);
-        }
-        .add-to-cart-btn:active { transform: translateY(0); }
-
-        /* --- ANIMASI JS --- */
-        .anim-element { opacity: 0; transform: translateY(25px); transition: all 0.6s cubic-bezier(0.25, 0.8, 0.25, 1); }
-        .anim-element.show { opacity: 1; transform: translateY(0); }
-
-        /* Responsive */
-        @media (max-width: 768px) {
-            .main-container { flex-direction: column; gap: 30px; margin: 30px auto; }
-            .right-col { padding-top: 10px; }
-            .navbar { padding: 15px 20px; justify-content: center; }
-        }
-    </style>
+    @vite(['resources/css/user.css'])
 </head>
-<body>
+<body class="page-detail">
 
     <nav class="navbar">
         <a href="{{ url('/katalog') }}"><i class="fa-solid fa-store"></i> Catalog</a>
