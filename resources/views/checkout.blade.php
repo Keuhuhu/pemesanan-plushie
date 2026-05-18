@@ -135,6 +135,12 @@
                 </a>
             </div>
         </div>
+
+        {{-- INPUT FILE DI DALAM FORM (wajib agar ikut tersubmit) --}}
+        <input type="file" name="bukti_pembayaran" id="buktiInput"
+               accept="image/jpeg,image/png,image/webp"
+               style="display:none;"
+               onchange="previewImage(event)">
     </form>
 
     <div class="modal-overlay" id="qrModal">
@@ -162,12 +168,20 @@
                     <div class="upload-placeholder" id="uploadPlaceholder">
                         <i class="fa-solid fa-cloud-arrow-up"></i>
                         <span>Klik atau drag foto ke sini</span>
-                        <small>JPG, PNG, WEBP — Maks. 5MB</small>
+                        <small>JPG, PNG, WEBP &mdash; Maks. 5MB</small>
                     </div>
-                    <img id="previewImg" src="" alt="Preview" style="display:none; width:100%; max-height:180px; object-fit:contain; border-radius:8px;">
+                    <img id="previewImg" src="" alt="Preview"
+                         style="display:none; width:100%; max-height:180px; object-fit:contain; border-radius:8px;">
                 </div>
-                <input type="file" name="bukti_pembayaran" id="buktiInput" accept="image/jpeg,image/png,image/webp" style="display:none;" onchange="previewImage(event)">
-                <p class="upload-error" id="uploadError" style="display:none; color:#e53e3e; font-size:12px; margin-top:6px;"></p>
+                {{-- Input file sudah ada di dalam <form> di atas --}}
+                <p class="upload-error" id="uploadError"
+                   style="display:none; color:#e53e3e; font-size:12px; margin-top:6px;"></p>
+
+                @error('bukti_pembayaran')
+                <p style="color:#e53e3e; font-size:12px; margin-top:6px;">
+                    <i class="fa-solid fa-circle-exclamation"></i> {{ $message }}
+                </p>
+                @enderror
             </div>
             {{-- ======================================= --}}
 
@@ -245,6 +259,11 @@
                     item.classList.add('show');
                 }, 100 + (index * 150));
             });
+
+            // Buka modal otomatis jika ada error validasi dari server
+            @if($errors->has('bukti_pembayaran'))
+                document.getElementById('qrModal').classList.add('show');
+            @endif
 
             // Drag & drop support
             const dropzone = document.getElementById('dropzone');
