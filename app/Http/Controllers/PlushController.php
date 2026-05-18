@@ -8,6 +8,7 @@ use App\Models\Cart;
 use App\Models\Transaksi;
 use App\Models\TransaksiDetail;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Str;
 
 class PlushController extends Controller
@@ -200,7 +201,17 @@ class PlushController extends Controller
 
     public function prosesCheckout(Request $request)
     {
-        // 1. Ambil keranjang user saat ini
+        // 1. Validasi termasuk bukti pembayaran
+        $request->validate([
+            'bukti_pembayaran' => 'required|image|mimes:jpeg,png,jpg,webp|max:5120',
+        ], [
+            'bukti_pembayaran.required' => 'Bukti pembayaran wajib diunggah.',
+            'bukti_pembayaran.image'    => 'File harus berupa gambar.',
+            'bukti_pembayaran.mimes'    => 'Format gambar harus jpeg, png, jpg, atau webp.',
+            'bukti_pembayaran.max'      => 'Ukuran file maksimal 5MB.',
+        ]);
+
+        // 2. Ambil keranjang user saat ini
         $carts = Cart::with('product')->where('user_id', Auth::id())->get();
 
         // Cegah user yang memaksa masuk url checkout padahal keranjangnya kosong
@@ -208,7 +219,7 @@ class PlushController extends Controller
             return redirect('/cart');
         }
 
-        // 2. Hitung Ulang Total Harga (Demi Keamanan)
+        // 3. Hitung Ulang Total Harga (Demi Keamanan)
         $subtotal = 0;
         foreach ($carts as $cart) {
             $subtotal += ($cart->product->harga * $cart->kuantitas);
@@ -216,16 +227,20 @@ class PlushController extends Controller
         $taxes = 10000;
         $total_harga = $subtotal + $taxes;
 
-        // 3. Buat Nomor Invoice Unik (Contoh: INV-1715000000-1)
-        // Menggabungkan kata INV, waktu saat ini (agar tidak ada yang sama), dan ID user
+        // 4. Buat Nomor Invoice Unik
         $invoice = 'INV-' . time() . '-' . Auth::id();
 
-        // 4. Simpan ke tabel transaksis (Kita simpan ke variabel $transaksiBaru)
+        // 5. Simpan bukti pembayaran ke storage
+        $buktiPath = $request->file('bukti_pembayaran')
+                             ->store('bukti_pembayaran', 'public');
+
+        // 6. Simpan ke tabel transaksis
         $transaksiBaru = Transaksi::create([
-            'user_id' => Auth::id(),
-            'invoice' => $invoice,
-            'status' => 'pending',
-            'total_harga' => $total_harga
+            'user_id'           => Auth::id(),
+            'invoice'           => $invoice,
+            'status'            => 'pending',
+            'total_harga'       => $total_harga,
+            'bukti_pembayaran'  => $buktiPath,
         ]);
 
         // Menyimpan data form dari halaman checkout ke tabel baru
@@ -245,28 +260,27 @@ class PlushController extends Controller
             'cvv'           => $request->input('cvv'),
         ]);
 
-        // 5. Salin data dari keranjang ke tabel transaksi_details
+        // 7. Salin data dari keranjang ke tabel transaksi_details
         foreach ($carts as $cart) {
             TransaksiDetail::create([
-                'transaksi_id' => $transaksiBaru->id, // Sambungkan ke ID transaksi yang baru saja dibuat
-                'product_id' => $cart->product_id,    // Catat ID bonekanya
-                'kuantitas' => $cart->kuantitas,      // Catat jumlah belinya
-                'harga_satuan' => $cart->product->harga // Catat harganya
+                'transaksi_id' => $transaksiBaru->id,
+                'product_id'   => $cart->product_id,
+                'kuantitas'    => $cart->kuantitas,
+                'harga_satuan' => $cart->product->harga,
             ]);
 
-            //LOGIKA BARU: Kurangi stok produk!
+            // Kurangi stok produk
             $product = Product::find($cart->product_id);
             if ($product) {
-                // decrement() adalah fungsi ajaib Laravel untuk mengurangi angka
-                $product->decrement('stock', $cart->kuantitas); 
+                $product->decrement('stock', $cart->kuantitas);
             }
         }
 
-        // 6. Sekarang aman untuk mengosongkan keranjang
+        // 8. Sekarang aman untuk mengosongkan keranjang
         Cart::where('user_id', Auth::id())->delete();
 
-        // 7. Lempar kembali ke katalog beserta pop-up sukses
-        return redirect('/katalog')->with('success', 'Admin akan melakukan review dari transaksi anda. Mohon tunggu untuk di approve.');
+        // 9. Redirect ke katalog dengan notifikasi sukses
+        return redirect('/katalog')->with('success', 'Pesanan berhasil dibuat! Bukti pembayaran telah dikirim. Admin akan mereview transaksi anda.');
     }
 
     //HISTORY PEMBELIAN

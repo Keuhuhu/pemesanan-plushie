@@ -10,7 +10,7 @@
 <body class="page-checkout">
 
 
-    <form id="checkoutForm" class="checkout-container" action="{{ route('transaksis.store') }}" method="POST">
+    <form id="checkoutForm" class="checkout-container" action="{{ route('transaksis.store') }}" method="POST" enctype="multipart/form-data">
         @csrf
 
         <div class="form-sections">
@@ -155,6 +155,22 @@
             <div class="total-label">TOTAL TO PAY</div>
             <div class="total-amount">Rp {{ number_format($total, 0, ',', '.') }}</div>
 
+            {{-- ====== UPLOAD BUKTI PEMBAYARAN ====== --}}
+            <div class="upload-section" id="uploadSection">
+                <p class="upload-label"><i class="fa-solid fa-image"></i> Upload Bukti Pembayaran</p>
+                <div class="upload-dropzone" id="dropzone" onclick="document.getElementById('buktiInput').click()">
+                    <div class="upload-placeholder" id="uploadPlaceholder">
+                        <i class="fa-solid fa-cloud-arrow-up"></i>
+                        <span>Klik atau drag foto ke sini</span>
+                        <small>JPG, PNG, WEBP — Maks. 5MB</small>
+                    </div>
+                    <img id="previewImg" src="" alt="Preview" style="display:none; width:100%; max-height:180px; object-fit:contain; border-radius:8px;">
+                </div>
+                <input type="file" name="bukti_pembayaran" id="buktiInput" accept="image/jpeg,image/png,image/webp" style="display:none;" onchange="previewImage(event)">
+                <p class="upload-error" id="uploadError" style="display:none; color:#e53e3e; font-size:12px; margin-top:6px;"></p>
+            </div>
+            {{-- ======================================= --}}
+
             <button type="button" class="confirm-btn" style="padding: 16px; margin-bottom: 15px;" onclick="submitFinalOrder()">
                 I Have Paid <i class="fa-solid fa-check"></i>
             </button>
@@ -162,6 +178,63 @@
             <a class="cancel-link" onclick="closeModal()">Cancel Payment</a>
         </div>
     </div>
+
+    <style>
+        /* ======== UPLOAD BUKTI PEMBAYARAN ======== */
+        .upload-section {
+            width: 100%;
+            margin: 16px 0 12px 0;
+            text-align: left;
+        }
+        .upload-label {
+            font-size: 13px;
+            font-weight: 700;
+            color: #4a3060;
+            margin: 0 0 8px 0;
+            display: flex;
+            align-items: center;
+            gap: 6px;
+        }
+        .upload-dropzone {
+            border: 2px dashed #c4b0d8;
+            border-radius: 12px;
+            background: #f9f4ff;
+            cursor: pointer;
+            padding: 20px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            min-height: 110px;
+            transition: border-color 0.2s, background 0.2s;
+            position: relative;
+            overflow: hidden;
+        }
+        .upload-dropzone:hover, .upload-dropzone.dragover {
+            border-color: #7c3aed;
+            background: #f0e8ff;
+        }
+        .upload-placeholder {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 6px;
+            color: #9b7ec8;
+            pointer-events: none;
+        }
+        .upload-placeholder i {
+            font-size: 28px;
+            color: #7c3aed;
+        }
+        .upload-placeholder span {
+            font-size: 13px;
+            font-weight: 600;
+        }
+        .upload-placeholder small {
+            font-size: 11px;
+            color: #b39ddb;
+        }
+        /* ======================================== */
+    </style>
 
     <script>
         document.addEventListener("DOMContentLoaded", () => {
@@ -172,6 +245,22 @@
                     item.classList.add('show');
                 }, 100 + (index * 150));
             });
+
+            // Drag & drop support
+            const dropzone = document.getElementById('dropzone');
+            if (dropzone) {
+                dropzone.addEventListener('dragover', (e) => {
+                    e.preventDefault();
+                    dropzone.classList.add('dragover');
+                });
+                dropzone.addEventListener('dragleave', () => dropzone.classList.remove('dragover'));
+                dropzone.addEventListener('drop', (e) => {
+                    e.preventDefault();
+                    dropzone.classList.remove('dragover');
+                    const file = e.dataTransfer.files[0];
+                    if (file) setPreview(file);
+                });
+            }
         });
 
         function openModal() {
@@ -187,16 +276,58 @@
             document.getElementById('qrModal').classList.remove('show');
         }
 
+        function previewImage(event) {
+            const file = event.target.files[0];
+            if (file) setPreview(file);
+        }
+
+        function setPreview(file) {
+            // Sync ke input file asli jika drop
+            const input = document.getElementById('buktiInput');
+            const dt = new DataTransfer();
+            dt.items.add(file);
+            input.files = dt.files;
+
+            const reader = new FileReader();
+            reader.onload = (e) => {
+                document.getElementById('uploadPlaceholder').style.display = 'none';
+                const preview = document.getElementById('previewImg');
+                preview.src = e.target.result;
+                preview.style.display = 'block';
+            };
+            reader.readAsDataURL(file);
+            document.getElementById('uploadError').style.display = 'none';
+        }
+
         function submitFinalOrder() {
+            const input = document.getElementById('buktiInput');
+            const errorEl = document.getElementById('uploadError');
+
+            // Validasi: wajib upload bukti
+            if (!input || !input.files || input.files.length === 0) {
+                errorEl.textContent = 'Wajib upload foto bukti pembayaran sebelum melanjutkan.';
+                errorEl.style.display = 'block';
+                return;
+            }
+
+            // Validasi ukuran file < 5MB
+            if (input.files[0].size > 5 * 1024 * 1024) {
+                errorEl.textContent = 'Ukuran file melebihi 5MB. Pilih gambar yang lebih kecil.';
+                errorEl.style.display = 'block';
+                return;
+            }
+
+            errorEl.style.display = 'none';
+
             // Animasi loading pada tombol saat diklik
             const btn = document.querySelector('#qrModal .confirm-btn');
-            btn.innerHTML = '<i class="fa-solid fa-circle-notch fa-spin"></i> Processing...';
+            btn.innerHTML = '<i class="fa-solid fa-circle-notch fa-spin"></i> Memproses...';
             btn.style.opacity = '0.7';
             btn.style.pointerEvents = 'none';
             
             setTimeout(() => {
                 document.getElementById('checkoutForm').submit();
-            }, 800); // Simulasi delay pendek sebelum submit
+            }, 800);
         }
     </script>
 </body>

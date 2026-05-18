@@ -12,6 +12,7 @@ class Transaksi extends Model
         'invoice',
         'status',
         'total_harga',
+        'bukti_pembayaran',
     ];
 
     public function user()
