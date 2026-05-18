@@ -21,40 +21,40 @@
             </div>
         </div>
 
-        {{-- Baris 2: 2 Kotak Pendapatan --}}
-        <div style="display: grid; grid-template-columns: repeat(2, 1fr); gap: 24px; margin-bottom: 30px; width: 100%;">
+        {{-- Baris 2: 2 Kotak Pendapatan (full-width di bawah) --}}
+        <div style="display: flex; gap: 24px; margin-bottom: 30px; width: 100%;">
 
             {{-- Kotak: Total Pendapatan Sepanjang Masa --}}
-            <div style="background: linear-gradient(135deg, #1a1a2e 0%, #16213e 60%, #0f3460 100%); padding: 28px 32px; border-radius: 14px; box-shadow: 0 8px 32px rgba(15,52,96,0.25); display: flex; align-items: center; gap: 22px; position: relative; overflow: hidden;">
-                <div style="position: absolute; top: -20px; right: -20px; width: 120px; height: 120px; background: rgba(255,255,255,0.04); border-radius: 50%;"></div>
-                <div style="position: absolute; bottom: -30px; right: 60px; width: 80px; height: 80px; background: rgba(255,255,255,0.03); border-radius: 50%;"></div>
-                <div style="background: rgba(255,215,0,0.15); border: 1px solid rgba(255,215,0,0.3); border-radius: 14px; padding: 14px; flex-shrink: 0;">
-                    <i class="fa-solid fa-coins" style="color: #ffd700; font-size: 26px;"></i>
+            <div style="flex: 1; background: linear-gradient(135deg, #1a1a2e 0%, #16213e 60%, #0f3460 100%); padding: 28px 36px; border-radius: 14px; box-shadow: 0 8px 32px rgba(15,52,96,0.25); display: flex; align-items: center; gap: 24px; position: relative; overflow: hidden;">
+                <div style="position: absolute; top: -20px; right: -20px; width: 140px; height: 140px; background: rgba(255,255,255,0.04); border-radius: 50%;"></div>
+                <div style="position: absolute; bottom: -30px; right: 80px; width: 90px; height: 90px; background: rgba(255,255,255,0.03); border-radius: 50%;"></div>
+                <div style="background: rgba(255,215,0,0.15); border: 1px solid rgba(255,215,0,0.3); border-radius: 14px; padding: 16px; flex-shrink: 0;">
+                    <i class="fa-solid fa-coins" style="color: #ffd700; font-size: 30px;"></i>
                 </div>
                 <div style="z-index: 1;">
-                    <p style="margin: 0 0 6px 0; color: rgba(255,255,255,0.6); font-size: 12px; font-weight: 700; text-transform: uppercase; letter-spacing: 1px;">Total Pendapatan Sepanjang Masa</p>
-                    <h2 style="margin: 0; color: #ffffff; font-size: 28px; font-weight: 800; letter-spacing: -0.5px;">
+                    <p style="margin: 0 0 8px 0; color: rgba(255,255,255,0.6); font-size: 12px; font-weight: 700; text-transform: uppercase; letter-spacing: 1px;">Total Pendapatan Sepanjang Masa</p>
+                    <h2 style="margin: 0; color: #ffffff; font-size: 32px; font-weight: 800; letter-spacing: -0.5px;">
                         Rp {{ number_format($totalPendapatanSepanjangMasa, 0, ',', '.') }}
                     </h2>
-                    <p style="margin: 6px 0 0 0; color: rgba(255,215,0,0.7); font-size: 11px; font-weight: 600;">
+                    <p style="margin: 8px 0 0 0; color: rgba(255,215,0,0.7); font-size: 12px; font-weight: 600;">
                         <i class="fa-solid fa-circle-check" style="margin-right: 4px;"></i> Dari seluruh transaksi sukses
                     </p>
                 </div>
             </div>
 
             {{-- Kotak: Pendapatan Bulan Ini --}}
-            <div style="background: linear-gradient(135deg, #1b4332 0%, #2d6a4f 60%, #40916c 100%); padding: 28px 32px; border-radius: 14px; box-shadow: 0 8px 32px rgba(27,67,50,0.3); display: flex; align-items: center; gap: 22px; position: relative; overflow: hidden;">
-                <div style="position: absolute; top: -20px; right: -20px; width: 120px; height: 120px; background: rgba(255,255,255,0.05); border-radius: 50%;"></div>
-                <div style="position: absolute; bottom: -30px; right: 60px; width: 80px; height: 80px; background: rgba(255,255,255,0.03); border-radius: 50%;"></div>
-                <div style="background: rgba(144,238,144,0.15); border: 1px solid rgba(144,238,144,0.3); border-radius: 14px; padding: 14px; flex-shrink: 0;">
-                    <i class="fa-solid fa-calendar-check" style="color: #90ee90; font-size: 26px;"></i>
+            <div style="flex: 1; background: linear-gradient(135deg, #1b4332 0%, #2d6a4f 60%, #40916c 100%); padding: 28px 36px; border-radius: 14px; box-shadow: 0 8px 32px rgba(27,67,50,0.3); display: flex; align-items: center; gap: 24px; position: relative; overflow: hidden;">
+                <div style="position: absolute; top: -20px; right: -20px; width: 140px; height: 140px; background: rgba(255,255,255,0.05); border-radius: 50%;"></div>
+                <div style="position: absolute; bottom: -30px; right: 80px; width: 90px; height: 90px; background: rgba(255,255,255,0.03); border-radius: 50%;"></div>
+                <div style="background: rgba(144,238,144,0.15); border: 1px solid rgba(144,238,144,0.3); border-radius: 14px; padding: 16px; flex-shrink: 0;">
+                    <i class="fa-solid fa-calendar-check" style="color: #90ee90; font-size: 30px;"></i>
                 </div>
                 <div style="z-index: 1;">
-                    <p style="margin: 0 0 6px 0; color: rgba(255,255,255,0.6); font-size: 12px; font-weight: 700; text-transform: uppercase; letter-spacing: 1px;">Pendapatan Bulan Ini &mdash; {{ \Illuminate\Support\Carbon::now()->translatedFormat('F Y') }}</p>
-                    <h2 style="margin: 0; color: #ffffff; font-size: 28px; font-weight: 800; letter-spacing: -0.5px;">
+                    <p style="margin: 0 0 8px 0; color: rgba(255,255,255,0.6); font-size: 12px; font-weight: 700; text-transform: uppercase; letter-spacing: 1px;">Pendapatan Bulan Ini &mdash; {{ \Illuminate\Support\Carbon::now()->translatedFormat('F Y') }}</p>
+                    <h2 style="margin: 0; color: #ffffff; font-size: 32px; font-weight: 800; letter-spacing: -0.5px;">
                         Rp {{ number_format($totalPendapatanBulanIni, 0, ',', '.') }}
                     </h2>
-                    <p style="margin: 6px 0 0 0; color: rgba(144,238,144,0.8); font-size: 11px; font-weight: 600;">
+                    <p style="margin: 8px 0 0 0; color: rgba(144,238,144,0.8); font-size: 12px; font-weight: 600;">
                         <i class="fa-solid fa-arrow-trend-up" style="margin-right: 4px;"></i> Transaksi sukses {{ \Illuminate\Support\Carbon::now()->translatedFormat('F') }}
                     </p>
                 </div>
