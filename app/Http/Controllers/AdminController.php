@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
+use Illuminate\Support\Carbon;
 use App\Models\Transaksi; 
 use App\Models\User;
 use Illuminate\Support\Facades\Hash;
@@ -92,7 +93,14 @@ class AdminController extends Controller
 
         $orders = $query->orderBy('created_at', 'desc')->get();
 
-        return view('admin.all', compact('orders'));
+        // Hitung total pendapatan (hanya transaksi sukses)
+        $totalPendapatanSepanjangMasa = Transaksi::where('status', 'sukses')->sum('total_harga');
+        $totalPendapatanBulanIni     = Transaksi::where('status', 'sukses')
+            ->whereYear('created_at', Carbon::now()->year)
+            ->whereMonth('created_at', Carbon::now()->month)
+            ->sum('total_harga');
+
+        return view('admin.all', compact('orders', 'totalPendapatanSepanjangMasa', 'totalPendapatanBulanIni'));
     }
 
 
