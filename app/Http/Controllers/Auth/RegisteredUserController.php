@@ -47,9 +47,7 @@ class RegisteredUserController extends Controller
 
         event(new Registered($user));
 
-        Auth::login($user);
-
-        // Nanti bisa diubah redirect-nya ke route('katalog') jika sudah dibuat
-        return redirect(url('/katalog'));
+        // Redirect to login page instead of auto-login
+        return redirect()->route('login')->with('status', 'Registrasi berhasil! Silakan login.');
     }
 }
