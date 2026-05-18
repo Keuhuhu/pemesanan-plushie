@@ -37,9 +37,14 @@
                 </span>
                 
                 @if(strtolower($trx->status) == 'sukses')
-                <a href="{{ route('history.print', $trx->id) }}" target="_blank" style="background-color: var(--primary-dark); color: white; padding: 6px 12px; border-radius: 6px; text-decoration: none; font-size: 13px; font-weight: 600; display: inline-flex; align-items: center; gap: 5px; transition: background 0.3s;">
-                    <i class="fa-solid fa-print"></i> Cetak Struk
-                </a>
+                <div style="display: flex; gap: 8px;">
+                    <a href="{{ route('history.print', $trx->id) }}" target="_blank" style="background-color: var(--primary-dark); color: white; padding: 6px 12px; border-radius: 6px; text-decoration: none; font-size: 13px; font-weight: 600; display: inline-flex; align-items: center; gap: 5px; transition: background 0.3s;">
+                        <i class="fa-solid fa-print"></i> Cetak
+                    </a>
+                    <a href="{{ route('history.download', $trx->id) }}" style="background-color: #4a90e2; color: white; padding: 6px 12px; border-radius: 6px; text-decoration: none; font-size: 13px; font-weight: 600; display: inline-flex; align-items: center; gap: 5px; transition: background 0.3s;">
+                        <i class="fa-solid fa-download"></i> Download PDF
+                    </a>
+                </div>
                 @endif
             </div>
         </div>

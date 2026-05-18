@@ -25,6 +25,7 @@ Route::middleware(['auth'])->group(function () {
     Route::post('/checkout/proses', [App\Http\Controllers\PlushController::class, 'prosesCheckout'])->name('transaksis.store');
     Route::get('/history', [App\Http\Controllers\PlushController::class, 'history'])->name('user.history');
     Route::get('/history/{id}/print', [App\Http\Controllers\PlushController::class, 'printReceipt'])->name('history.print');
+    Route::get('/history/{id}/download', [App\Http\Controllers\PlushController::class, 'downloadReceipt'])->name('history.download');
 });
 
 // ==========================================

@@ -10,6 +10,7 @@ use App\Models\TransaksiDetail;
 use Illuminate\Support\Facades\Auth;
 use Cloudinary\Cloudinary;
 use Illuminate\Support\Str;
+use Barryvdh\DomPDF\Facade\Pdf;
 
 class PlushController extends Controller
 {
@@ -316,6 +317,26 @@ class PlushController extends Controller
         }
 
         return view('receipt_print', compact('transaction'));
+    }
+
+    // DOWNLOAD STRUK PEMBELIAN (PDF)
+    public function downloadReceipt($id)
+    {
+        // Pastikan transaksi ini milik user yang sedang login dan berstatus sukses
+        $transaction = \App\Models\Transaksi::with(['details.product'])
+                        ->where('user_id', Auth::id())
+                        ->where('id', $id)
+                        ->firstOrFail();
+
+        if (strtolower($transaction->status) !== 'sukses') {
+            return back()->with('error', 'Hanya transaksi yang sudah disetujui yang dapat diunduh struknya.');
+        }
+
+        // Kita bisa me-reuse view receipt_print dengan penyesuaian untuk PDF jika diperlukan
+        // Atau buat view khusus PDF jika layoutnya bermasalah. Kita coba gunakan yang sama.
+        $pdf = Pdf::loadView('receipt_print', compact('transaction'));
+        
+        return $pdf->download('Struk_Pembelian_' . $transaction->invoice . '.pdf');
     }
 }
 
