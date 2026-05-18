@@ -8,7 +8,7 @@ use App\Models\Cart;
 use App\Models\Transaksi;
 use App\Models\TransaksiDetail;
 use Illuminate\Support\Facades\Auth;
-use Illuminate\Support\Facades\Storage;
+use Cloudinary\Cloudinary;
 use Illuminate\Support\Str;
 
 class PlushController extends Controller
@@ -230,9 +230,18 @@ class PlushController extends Controller
         // 4. Buat Nomor Invoice Unik
         $invoice = 'INV-' . time() . '-' . Auth::id();
 
-        // 5. Simpan bukti pembayaran ke storage
-        $buktiPath = $request->file('bukti_pembayaran')
-                             ->store('bukti_pembayaran', 'public');
+        // 5. Upload bukti pembayaran ke Cloudinary
+        $cloudinary = new Cloudinary(env('CLOUDINARY_URL'));
+        $uploadResult = $cloudinary->uploadApi()->upload(
+            $request->file('bukti_pembayaran')->getRealPath(),
+            [
+                'folder' => 'bukti_pembayaran',
+                'public_id' => 'bukti_' . time() . '_' . Auth::id(),
+                'overwrite' => true,
+                'resource_type' => 'image',
+            ]
+        );
+        $buktiUrl = $uploadResult['secure_url'];
 
         // 6. Simpan ke tabel transaksis
         $transaksiBaru = Transaksi::create([
@@ -240,7 +249,7 @@ class PlushController extends Controller
             'invoice'           => $invoice,
             'status'            => 'pending',
             'total_harga'       => $total_harga,
-            'bukti_pembayaran'  => $buktiPath,
+            'bukti_pembayaran'  => $buktiUrl,
         ]);
 
         // Menyimpan data form dari halaman checkout ke tabel baru

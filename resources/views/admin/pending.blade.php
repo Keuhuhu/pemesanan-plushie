@@ -50,7 +50,7 @@
                         <button type="button"
                             class="approve-btn"
                             style="background:#6c3fc5; color:white; border:none; border-radius:8px; padding:7px 12px; cursor:pointer; font-size:12px; display:inline-flex; align-items:center; gap:5px;"
-                            onclick="showBukti('{{ asset('storage/' . $order->bukti_pembayaran) }}', '{{ $order->invoice }}')">
+                            onclick="showBukti('{{ $order->bukti_pembayaran }}', '{{ $order->invoice }}')">
                             <i class="fa-solid fa-image"></i> Detail
                         </button>
                     @else
