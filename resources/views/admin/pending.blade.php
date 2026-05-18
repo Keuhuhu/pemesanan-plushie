@@ -111,12 +111,12 @@
                 <img id="buktiImg" src="" alt="Bukti Pembayaran"
                     style="width:100%; max-height:400px; object-fit:contain; display:block; background:#f9f4ff;">
             </div>
-            <a id="buktiDownload" href="#" download target="_blank"
+            <button id="buktiDownload" onclick="downloadBukti()"
                 style="display:inline-flex; align-items:center; gap:7px; margin-top:16px;
                 background:#6c3fc5; color:white; padding:10px 20px; border-radius:10px;
-                text-decoration:none; font-size:13px; font-weight:600;">
+                border:none; cursor:pointer; font-size:13px; font-weight:600;">
                 <i class="fa-solid fa-download"></i> Download Gambar
-            </a>
+            </button>
         </div>
     </div>
 
@@ -128,15 +128,41 @@
     </style>
 
     <script>
+        let currentBuktiSrc = '';
+        let currentBuktiInvoice = '';
+
         function showBukti(src, invoice) {
+            currentBuktiSrc = src;
+            currentBuktiInvoice = invoice;
             document.getElementById('buktiImg').src = src;
             document.getElementById('buktiInvoice').textContent = invoice;
-            document.getElementById('buktiDownload').href = src;
-            const modal = document.getElementById('buktiModal');
-            modal.style.display = 'flex';
+            document.getElementById('buktiModal').style.display = 'flex';
         }
         function closeBukti() {
             document.getElementById('buktiModal').style.display = 'none';
+        }
+        function downloadBukti() {
+            const btn = document.getElementById('buktiDownload');
+            btn.innerHTML = '<i class="fa-solid fa-spinner fa-spin"></i> Mengunduh...';
+            btn.disabled = true;
+
+            fetch(currentBuktiSrc)
+                .then(res => res.blob())
+                .then(blob => {
+                    const url = URL.createObjectURL(blob);
+                    const a = document.createElement('a');
+                    a.href = url;
+                    a.download = 'bukti_' + currentBuktiInvoice + '.jpg';
+                    document.body.appendChild(a);
+                    a.click();
+                    document.body.removeChild(a);
+                    URL.revokeObjectURL(url);
+                })
+                .catch(() => alert('Gagal mengunduh gambar.'))
+                .finally(() => {
+                    btn.innerHTML = '<i class="fa-solid fa-download"></i> Download Gambar';
+                    btn.disabled = false;
+                });
         }
         // Tutup saat klik backdrop
         document.getElementById('buktiModal').addEventListener('click', function(e) {
