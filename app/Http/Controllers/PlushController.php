@@ -292,7 +292,6 @@ class PlushController extends Controller
         return redirect('/katalog')->with('success', 'Pesanan berhasil dibuat! Bukti pembayaran telah dikirim. Admin akan mereview transaksi anda.');
     }
 
-    //HISTORY PEMBELIAN
     public function history()
     {
         // Mengambil transaksi yang hanya milik user yang sedang login
@@ -301,6 +300,22 @@ class PlushController extends Controller
                         ->get();
 
         return view('history', compact('transactions'));
+    }
+
+    // CETAK STRUK PEMBELIAN
+    public function printReceipt($id)
+    {
+        // Pastikan transaksi ini milik user yang sedang login dan berstatus sukses
+        $transaction = \App\Models\Transaksi::with(['details.product'])
+                        ->where('user_id', Auth::id())
+                        ->where('id', $id)
+                        ->firstOrFail();
+
+        if (strtolower($transaction->status) !== 'sukses') {
+            return back()->with('error', 'Hanya transaksi yang sudah disetujui yang dapat dicetak struknya.');
+        }
+
+        return view('receipt_print', compact('transaction'));
     }
 }
 

@@ -31,10 +31,16 @@
                 <p><i class="fa-regular fa-calendar"></i> {{ \Carbon\Carbon::parse($trx->created_at)->format('d M Y, H:i') }}</p>
                 <div class="history-price">Rp {{ number_format($trx->total_harga, 0, ',', '.') }}</div>
             </div>
-            <div>
+            <div style="display: flex; flex-direction: column; align-items: flex-end; gap: 10px;">
                 <span class="status-badge {{ strtolower($trx->status) == 'pending' ? 'status-pending' : 'status-sukses' }}">
-                    {{ $trx->status }}
+                    {{ strtoupper($trx->status) }}
                 </span>
+                
+                @if(strtolower($trx->status) == 'sukses')
+                <a href="{{ route('history.print', $trx->id) }}" target="_blank" style="background-color: var(--primary); color: white; padding: 6px 12px; border-radius: 6px; text-decoration: none; font-size: 13px; font-weight: 600; display: inline-flex; align-items: center; gap: 5px; transition: background 0.3s;">
+                    <i class="fa-solid fa-print"></i> Cetak Struk
+                </a>
+                @endif
             </div>
         </div>
         @empty
