@@ -32,6 +32,13 @@
             </tr>
             @endforeach
         </tbody>
+        <tfoot>
+            <tr>
+                <th colspan="2" style="text-align: right;">Total Keseluruhan:</th>
+                <th>Rp {{ number_format($orders->sum('total_harga'), 0, ',', '.') }}</th>
+                <th colspan="2"></th>
+            </tr>
+        </tfoot>
     </table>
 </body>
 </html>

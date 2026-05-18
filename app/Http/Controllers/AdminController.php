@@ -227,7 +227,9 @@ class AdminController extends Controller
         fprintf($file, chr(0xEF).chr(0xBB).chr(0xBF));
         fputcsv($file, $columns);
 
+        $totalSemua = 0;
         foreach ($orders as $order) {
+            $totalSemua += $order->total_harga;
             fputcsv($file, [
                 $order->invoice,
                 $order->user?->username ?? 'Deleted User',
@@ -237,6 +239,16 @@ class AdminController extends Controller
                 $order->created_at->format('d M Y, H:i')
             ]);
         }
+        
+        // Tambahkan baris total
+        fputcsv($file, [
+            '', 
+            '', 
+            'TOTAL KESELURUHAN:', 
+            $totalSemua, 
+            '', 
+            ''
+        ]);
         fclose($file);
     };
 
