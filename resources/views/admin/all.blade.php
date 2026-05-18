@@ -4,7 +4,7 @@
 @section('pageSubtitle', 'Pantau arus transaksi masuk tokomu.')
 
 @section('content')
-    <div class="section-header">
+    <div style="display: block; width: 100%; margin-bottom: 30px;">
         {{-- Baris 1: 3 Kotak Status --}}
         <div style="display: grid; grid-template-columns: repeat(3, 1fr); gap: 24px; margin-bottom: 20px; margin-top: 15px; width: 100%;">
             <div style="background: white; padding: 24px 30px; border-radius: 12px; border-left: 5px solid #28a745; box-shadow: 0 4px 15px rgba(0,0,0,0.03); display: flex; flex-direction: column; justify-content: center;">
